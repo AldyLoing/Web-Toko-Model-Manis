@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary">
+                <i class="fas fa-plus me-2"></i>Tambah Kategori Baru
+            </h2>
+            <a href="{% url 'manage_categories' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Kembali
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama Kategori <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Contoh: Pakaian, Elektronik, dll.">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Deskripsi Kategori</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Deskripsi singkat tentang kategori ini..."></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Gambar Kategori</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <div class="form-text">Format: JPG, PNG, GIF. Maksimal 5MB. Gambar akan digunakan sebagai icon kategori.</div>
+                    </div>
+                    
+                    <!-- Image Preview -->
+                    <div id="imagePreview" class="mb-3" style="display: none;">
+                        <label class="form-label">Preview Gambar:</label>
+                        <div class="border rounded p-2 text-center bg-light">
+                            <img id="previewImg" src="" style="max-width: 200px; max-height: 200px; object-fit: cover;" class="rounded">
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{% url 'manage_categories' %}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i>Batal
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Simpan Kategori
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 0.25rem rgba(231, 76, 60, 0.25);
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+#imagePreview {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Preview gambar saat dipilih
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    });
+    
+    // Auto-generate slug dari nama (optional untuk future use)
+    const nameInput = document.getElementById('name');
+    nameInput.addEventListener('input', function(e) {
+        // Bisa ditambahkan auto-slug generation jika diperlukan
+    });
+});
+</script>
+{% endblock %}

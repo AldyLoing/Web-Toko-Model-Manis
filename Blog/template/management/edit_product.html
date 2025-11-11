@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary">
+                <i class="fas fa-edit me-2"></i>Edit Produk
+            </h2>
+            <a href="{% url 'manage_products' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Kembali
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Nama Produk <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">Kategori <span class="text-danger">*</span></label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Pilih Kategori</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == product.category.id %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Deskripsi Produk</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Deskripsi lengkap produk...">{{ product.description }}</textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="price" class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="price" name="price" value="{{ product.price|floatformat:0 }}" min="0" step="1000" required>
+                        </div>
+                        
+                        <div class="col-md-2 mb-3">
+                            <label for="stock" class="form-label">Stok</label>
+                            <input type="number" class="form-control" id="stock" name="stock" value="{{ product.stock }}" min="0" placeholder="0">
+                            <div class="form-text">Jumlah stok tersedia</div>
+                        </div>
+                        
+                        <div class="col-md-7 mb-3">
+                            <label for="image" class="form-label">Gambar Produk</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            <div class="form-text">Format: JPG, PNG, GIF. Maksimal 5MB. Kosongkan jika tidak ingin mengubah gambar.</div>
+                            
+                            {% if product.main_image %}
+                            <div class="mt-2">
+                                <small class="text-muted">Gambar saat ini:</small><br>
+                                <img src="{{ product.main_image.url }}" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tiktok_url" class="form-label">Link Tiktok</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fab fa-tiktok text-success"></i></span>
+                                <input type="url" class="form-control" id="tiktok_url" name="tiktok_url" value="{{ product.tiktok_url }}" placeholder="https://tiktok.com/...">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="shopee_url" class="form-label">Link Shopee</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-shopping-bag text-warning"></i></span>
+                                <input type="url" class="form-control" id="shopee_url" name="shopee_url" value="{{ product.shopee_url }}" placeholder="https://shopee.co.id/...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{% url 'manage_products' %}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i>Batal
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Update Produk
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 0.25rem rgba(231, 76, 60, 0.25);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.img-thumbnail {
+    border: 2px solid #dee2e6;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Preview gambar baru saat dipilih
+    const imageInput = document.getElementById('image');
+    
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            console.log('New image selected:', file.name);
+            // Bisa ditambahkan preview gambar baru
+        }
+    });
+    
+    // Format input harga
+    const priceInput = document.getElementById('price');
+    priceInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/[^\d]/g, '');
+        if (value) {
+            e.target.value = value;
+        }
+    });
+});
+</script>
+{% endblock %}

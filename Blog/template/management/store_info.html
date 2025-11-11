@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary">
+                <i class="fas fa-store me-2"></i>Informasi Toko
+            </h2>
+            <a href="{% url 'manage_dashboard' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Kembali
+            </a>
+        </div>
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="row">
+        <!-- Store Information Section -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Informasi Umum
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- About Section -->
+                    <div class="mb-4">
+                        <h6 class="text-primary">Tentang Toko</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="about_title" class="form-label">Judul</label>
+                                <input type="text" class="form-control" id="about_title" name="about_title" 
+                                       value="{{ about_info.title|default:'Tentang Toko Model Manis' }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="about_image" class="form-label">Gambar Toko</label>
+                                <input type="file" class="form-control" id="about_image" name="about_image" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="about_content" class="form-label">Deskripsi Toko</label>
+                            <textarea class="form-control" id="about_content" name="about_content" rows="4" 
+                                      placeholder="Ceritakan tentang toko Anda...">{{ about_info.content }}</textarea>
+                        </div>
+                        {% if about_info.image %}
+                        <div class="mb-3">
+                            <small class="text-muted">Gambar saat ini:</small><br>
+                            <img src="{{ about_info.image.url }}" alt="Store Image" class="img-thumbnail" style="max-width: 200px;">
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Vision Section -->
+                    <div class="mb-4">
+                        <h6 class="text-primary">Visi</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="vision_title" class="form-label">Judul Visi</label>
+                                <input type="text" class="form-control" id="vision_title" name="vision_title" 
+                                       value="{{ vision_info.title|default:'Visi Kami' }}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vision_content" class="form-label">Isi Visi</label>
+                            <textarea class="form-control" id="vision_content" name="vision_content" rows="3" 
+                                      placeholder="Tuliskan visi toko Anda...">{{ vision_info.content }}</textarea>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Mission Section -->
+                    <div class="mb-3">
+                        <h6 class="text-primary">Misi</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="mission_title" class="form-label">Judul Misi</label>
+                                <input type="text" class="form-control" id="mission_title" name="mission_title" 
+                                       value="{{ mission_info.title|default:'Misi Kami' }}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mission_content" class="form-label">Isi Misi</label>
+                            <textarea class="form-control" id="mission_content" name="mission_content" rows="3" 
+                                      placeholder="Tuliskan misi toko Anda...">{{ mission_info.content }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Information Section -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-phone me-2"></i>Kontak & Lokasi
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="store_name" class="form-label">Nama Toko</label>
+                        <input type="text" class="form-control" id="store_name" name="store_name" 
+                               value="{{ contact_info.store_name|default:'Toko Model Manis' }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Nomor Telepon</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" 
+                               value="{{ contact_info.phone }}" placeholder="+62 xxx-xxxx-xxxx">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="whatsapp" class="form-label">WhatsApp</label>
+                        <input type="tel" class="form-control" id="whatsapp" name="whatsapp" 
+                               value="{{ contact_info.whatsapp }}" placeholder="+62 xxx-xxxx-xxxx">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               value="{{ contact_info.email }}" placeholder="info@tokomodelmanis.com">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Alamat</label>
+                        <textarea class="form-control" id="address" name="address" rows="3" 
+                                  placeholder="Alamat lengkap toko...">{{ contact_info.address }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="operating_hours" class="form-label">Jam Operasional</label>
+                        <textarea class="form-control" id="operating_hours" name="operating_hours" rows="2" 
+                                  placeholder="Senin-Sabtu 09:00-17:00">{{ contact_info.operating_hours }}</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Media & Marketplace -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-share-alt me-2"></i>Media Sosial & Marketplace
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="instagram_url" class="form-label">
+                            <i class="fab fa-instagram text-danger me-1"></i>Instagram
+                        </label>
+                        <input type="url" class="form-control" id="instagram_url" name="instagram_url" 
+                               value="{{ contact_info.instagram_url }}" placeholder="https://instagram.com/tokomodelmanis">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="facebook_url" class="form-label">
+                            <i class="fab fa-facebook text-primary me-1"></i>Facebook
+                        </label>
+                        <input type="url" class="form-control" id="facebook_url" name="facebook_url" 
+                               value="{{ contact_info.facebook_url }}" placeholder="https://facebook.com/tokomodelmanis">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tiktok_store_url" class="form-label">
+                            <i class="fas fa-store text-success me-1"></i>Tiktok
+                        </label>
+                        <input type="url" class="form-control" id="tiktok_store_url" name="tiktok_store_url" 
+                               value="{{ contact_info.tiktok_store_url }}" placeholder="https://tiktok.com/tokomodelmanis">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="shopee_store_url" class="form-label">
+                            <i class="fas fa-shopping-bag text-warning me-1"></i>Shopee
+                        </label>
+                        <input type="url" class="form-control" id="shopee_store_url" name="shopee_store_url" 
+                               value="{{ contact_info.shopee_store_url }}" placeholder="https://shopee.co.id/tokomodelmanis">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Button -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'manage_dashboard' %}" class="btn btn-secondary">
+                    <i class="fas fa-times me-1"></i>Batal
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i>Simpan Perubahan
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.btn-primary {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+.btn-primary:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+hr {
+    margin: 1.5rem 0;
+    opacity: 0.1;
+}
+</style>
+{% endblock %}

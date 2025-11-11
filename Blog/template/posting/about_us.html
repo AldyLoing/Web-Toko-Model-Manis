@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">Tentang Kami</h1>
+                <p class="lead">Mengenal lebih dekat dengan toko online kami dan komitmen kami untuk memberikan produk berkualitas terbaik</p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-store fa-10x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+{% if about_info %}
+<section class="about-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                {% if about_info.image %}
+                <img src="{{ about_info.image.url }}" alt="{{ about_info.title }}" 
+                     class="img-fluid rounded shadow">
+                {% else %}
+                <div class="about-image-placeholder d-flex align-items-center justify-content-center rounded shadow"
+                     style="height: 400px; background: var(--light-green);">
+                    <i class="fas fa-image fa-5x text-muted"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <h2 class="section-title mb-4">{{ about_info.title }}</h2>
+                <div class="about-content">
+                    {{ about_info.content|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="about-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="about-image-placeholder d-flex align-items-center justify-content-center rounded shadow"
+                     style="height: 400px; background: var(--light-green);">
+                    <i class="fas fa-store fa-5x text-muted"></i>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="section-title mb-4">Tentang Toko Kami</h2>
+                <div class="about-content">
+                    <p>Kami adalah toko online yang berkomitmen untuk menyediakan produk berkualitas tinggi dengan harga yang terjangkau. Dengan pengalaman bertahun-tahun dalam industri ini, kami memahami kebutuhan pelanggan dan selalu berusaha memberikan pelayanan terbaik.</p>
+                    
+                    <p>Kepuasan pelanggan adalah prioritas utama kami. Setiap produk yang kami jual telah melalui proses seleksi ketat untuk memastikan kualitas dan keasliannya.</p>
+                    
+                    <p>Bergabunglah dengan ribuan pelanggan yang telah mempercayai kami sebagai partner belanja online mereka.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Vision Mission Section -->
+<section class="vision-mission-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <!-- Vision -->
+            <div class="col-lg-6 mb-4">
+                <div class="vm-card h-100">
+                    <div class="vm-icon">
+                        <i class="fas fa-eye fa-3x text-primary"></i>
+                    </div>
+                    {% if vision_info %}
+                    <h3 class="vm-title">{{ vision_info.title }}</h3>
+                    <div class="vm-content">
+                        {{ vision_info.content|linebreaks }}
+                    </div>
+                    {% else %}
+                    <h3 class="vm-title">Visi Kami</h3>
+                    <div class="vm-content">
+                        <p>Menjadi toko online terpercaya yang memberikan pengalaman berbelanja terbaik dengan produk berkualitas tinggi dan pelayanan prima kepada seluruh pelanggan di Indonesia.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Mission -->
+            <div class="col-lg-6 mb-4">
+                <div class="vm-card h-100">
+                    <div class="vm-icon">
+                        <i class="fas fa-bullseye fa-3x text-success"></i>
+                    </div>
+                    {% if mission_info %}
+                    <h3 class="vm-title">{{ mission_info.title }}</h3>
+                    <div class="vm-content">
+                        {{ mission_info.content|linebreaks }}
+                    </div>
+                    {% else %}
+                    <h3 class="vm-title">Misi Kami</h3>
+                    <div class="vm-content">
+                        <ul class="mission-list">
+                            <li>Menyediakan produk berkualitas dengan harga yang kompetitif</li>
+                            <li>Memberikan pelayanan pelanggan yang ramah dan responsif</li>
+                            <li>Membangun kepercayaan melalui transparansi dan integritas</li>
+                            <li>Terus berinovasi untuk meningkatkan pengalaman berbelanja</li>
+                            <li>Mendukung pertumbuhan UMKM lokal</li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Story Section -->
+{% if story_info %}
+<section class="story-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title mb-4">{{ story_info.title }}</h2>
+                {% if story_info.image %}
+                <img src="{{ story_info.image.url }}" alt="{{ story_info.title }}" 
+                     class="img-fluid rounded shadow mb-4" style="max-height: 300px;">
+                {% endif %}
+                <div class="story-content">
+                    {{ story_info.content|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Values Section -->
+<section class="values-section py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title text-white">Nilai-Nilai Kami</h2>
+                <p class="text-white-50">Prinsip yang kami pegang dalam setiap langkah bisnis</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="value-item">
+                    <i class="fas fa-shield-alt fa-3x mb-3"></i>
+                    <h5>Kepercayaan</h5>
+                    <p>Membangun hubungan jangka panjang dengan pelanggan melalui transparansi dan kejujuran</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="value-item">
+                    <i class="fas fa-gem fa-3x mb-3"></i>
+                    <h5>Kualitas</h5>
+                    <p>Hanya menjual produk berkualitas tinggi yang telah melewati seleksi ketat</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="value-item">
+                    <i class="fas fa-heart fa-3x mb-3"></i>
+                    <h5>Pelayanan</h5>
+                    <p>Memberikan pelayanan terbaik dengan sikap ramah dan responsif</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="value-item">
+                    <i class="fas fa-rocket fa-3x mb-3"></i>
+                    <h5>Inovasi</h5>
+                    <p>Terus berkembang dan berinovasi untuk pengalaman berbelanja yang lebih baik</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info & Marketplace -->
+<section class="contact-marketplace-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title mb-4">Temukan Kami di</h2>
+                <p class="mb-4">Belanja mudah melalui berbagai platform marketplace favorit Anda</p>
+                
+                <div class="marketplace-links mb-5">
+                    {% if contact_info %}
+                        {% if contact_info.tiktok_store_url %}
+                        <a href="{{ contact_info.tiktok_store_url }}" target="_blank" class="btn btn-success btn-lg me-3 mb-3">
+                            <i class="fas fa-store me-2"></i>Tiktok Store
+                        </a>
+                        {% endif %}
+                        
+                        {% if contact_info.shopee_store_url %}
+                        <a href="{{ contact_info.shopee_store_url }}" target="_blank" class="btn btn-warning btn-lg me-3 mb-3">
+                            <i class="fas fa-store me-2"></i>Shopee Store
+                        </a>
+                        {% endif %}
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Link marketplace akan segera tersedia. Hubungi kami untuk informasi lebih lanjut.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Social Media -->
+                <div class="social-media">
+                    <h5 class="mb-3">Ikuti Media Sosial Kami</h5>
+                    <div class="social-buttons">
+                        {% if contact_info %}
+                            {% if contact_info.instagram_url %}
+                            <a href="{{ contact_info.instagram_url }}" target="_blank" class="btn btn-outline-danger me-2 mb-2">
+                                <i class="fab fa-instagram me-1"></i>Instagram
+                            </a>
+                            {% endif %}
+                            
+                            {% if contact_info.facebook_url %}
+                            <a href="{{ contact_info.facebook_url }}" target="_blank" class="btn btn-outline-primary me-2 mb-2">
+                                <i class="fab fa-facebook me-1"></i>Facebook
+                            </a>
+                            {% endif %}
+                            
+                            {% if contact_info.youtube_url %}
+                            <a href="{{ contact_info.youtube_url }}" target="_blank" class="btn btn-outline-danger me-2 mb-2">
+                                <i class="fab fa-youtube me-1"></i>YouTube
+                            </a>
+                            {% endif %}
+                        {% endif %}
+                        
+                        <a href="{% url 'contact' %}" class="btn btn-outline-success me-2 mb-2">
+                            <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-3">Siap Bergabung dengan Kami?</h2>
+                <p class="lead mb-4">Mulai pengalaman berbelanja yang menyenangkan bersama kami</p>
+                
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shopping-bag me-2"></i>Mulai Belanja
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-success btn-lg">
+                        <i class="fas fa-phone me-2"></i>Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.about-hero {
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: 1.5rem;
+}
+
+.about-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+.vm-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.vm-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.vm-icon {
+    margin-bottom: 1.5rem;
+}
+
+.vm-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: 1.5rem;
+}
+
+.vm-content {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #666;
+}
+
+.mission-list {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+}
+
+.mission-list li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.mission-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.story-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    text-align: left;
+}
+
+.value-item {
+    padding: 1.5rem;
+}
+
+.value-item i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.value-item h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.value-item p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+.marketplace-links .btn {
+    min-width: 200px;
+}
+
+.social-buttons .btn {
+    min-width: 120px;
+}
+
+.cta-section {
+    border-top: 3px solid var(--primary-green);
+}
+</style>
+{% endblock %}

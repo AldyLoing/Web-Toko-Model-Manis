@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="page-title">Kategori Produk</h1>
+            <p class="text-muted">Jelajahi berbagai kategori produk yang tersedia</p>
+        </div>
+    </div>
+
+    <!-- Categories Grid -->
+    {% if categories %}
+    <div class="row g-4">
+        {% for category in categories %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="category-card h-100">
+                {% if category.slug %}
+                <a href="{% url 'products_by_category' category.slug %}" class="text-decoration-none">
+                {% else %}
+                <a href="#" class="text-decoration-none" onclick="alert('Kategori sedang dalam perbaikan'); return false;">
+                {% endif %}
+                    <div class="category-image">
+                        {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid">
+                        {% else %}
+                        <div class="category-placeholder">
+                            <i class="fas fa-tag fa-4x"></i>
+                        </div>
+                        {% endif %}
+                        <div class="category-overlay">
+                            <div class="category-overlay-content">
+                                <i class="fas fa-arrow-right fa-2x"></i>
+                                <span>Lihat Produk</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-content">
+                        <h5 class="category-name">{{ category.name }}</h5>
+                        {% if category.description %}
+                        <p class="category-description">{{ category.description|truncatewords:15 }}</p>
+                        {% endif %}
+                        
+                        <!-- Product Count -->
+                        <div class="product-count">
+                            <span class="badge bg-primary">{{ category.products.count }} produk</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% else %}
+    <!-- No Categories -->
+    <div class="no-categories text-center py-5">
+        <i class="fas fa-tags fa-5x text-muted mb-4"></i>
+        <h4>Belum Ada Kategori</h4>
+        <p class="text-muted">Kategori produk akan segera tersedia. Silakan cek kembali nanti.</p>
+        <a href="{% url 'product_list' %}" class="btn btn-primary">
+            <i class="fas fa-shopping-bag me-2"></i>Lihat Semua Produk
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="cta-section text-center py-5 bg-light rounded">
+                <h3 class="mb-3">Tidak Menemukan Kategori yang Dicari?</h3>
+                <p class="mb-4">Hubungi kami untuk informasi produk atau kategori khusus yang Anda butuhkan</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'contact' %}" class="btn btn-primary">
+                        <i class="fas fa-envelope me-2"></i>Hubungi Kami
+                    </a>
+                    <a href="{% url 'product_list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-search me-2"></i>Lihat Semua Produk
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--dark-gray);
+}
+
+.category-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.category-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-green);
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.1);
+}
+
+.category-placeholder {
+    color: var(--primary-green);
+    opacity: 0.7;
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(46, 204, 113, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.category-card:hover .category-overlay {
+    opacity: 1;
+}
+
+.category-overlay-content {
+    text-align: center;
+    color: white;
+}
+
+.category-overlay-content i {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.category-overlay-content span {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.category-content {
+    padding: 1.5rem;
+}
+
+.category-name {
+    color: var(--dark-gray);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.category-card:hover .category-name {
+    color: var(--primary-green);
+}
+
+.category-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.product-count {
+    margin-top: 1rem;
+}
+
+.no-categories {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem;
+    margin: 2rem 0;
+}
+
+.cta-section {
+    border: 2px solid var(--primary-green);
+}
+
+.cta-section h3 {
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.cta-section p {
+    color: #6c757d;
+}
+</style>
+{% endblock %}

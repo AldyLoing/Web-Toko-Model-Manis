@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup - Toko Model Manis{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Pendaftaran Tidak Tersedia</h2>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Pendaftaran pengguna baru saat ini tidak tersedia. 
+                        Website ini adalah showcase produk untuk browsing dan kontak saja.
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'homepage' %}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Kembali ke Homepage
+                        </a>
+                        <a href="{% url 'contact' %}" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-envelope me-2"></i>Hubungi Kami
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

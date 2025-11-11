@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary">
+                <i class="fas fa-images me-2"></i>Kelola Slider
+            </h2>
+            <div>
+                <a href="{% url 'add_slide' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>Tambah Slide
+                </a>
+                <a href="{% url 'manage_dashboard' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Kembali
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if slides %}
+<div class="row">
+    {% for slide in slides %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            {% if slide.image %}
+            <img src="{{ slide.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="fas fa-image fa-3x text-muted"></i>
+            </div>
+            {% endif %}
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ slide.title }}</h5>
+                <p class="card-text">{{ slide.description|truncatewords:15 }}</p>
+                
+                <div class="mb-2">
+                    <small class="text-muted">
+                        <i class="fas fa-sort-numeric-up"></i> Urutan: {{ slide.order }}
+                    </small>
+                </div>
+                
+                {% if slide.product %}
+                <div class="mb-2">
+                    <small class="text-info">
+                        <i class="fas fa-box"></i> Produk: {{ slide.product.name }}
+                    </small>
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    {% if slide.is_active %}
+                    <span class="badge bg-success">
+                        <i class="fas fa-eye me-1"></i>Aktif
+                    </span>
+                    {% else %}
+                    <span class="badge bg-secondary">
+                        <i class="fas fa-eye-slash me-1"></i>Nonaktif
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="btn-group w-100" role="group">
+                    <a href="#" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="#" class="btn btn-outline-danger btn-sm" onclick="return confirm('Hapus slide ini?')">
+                        <i class="fas fa-trash"></i> Hapus
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-images fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">Belum Ada Slide</h4>
+                <p class="text-muted mb-4">Belum ada slide banner yang ditambahkan.</p>
+                <a href="{% url 'add_slide' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>Tambah Slide Pertama
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<style>
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.btn-group .btn {
+    border-radius: 0;
+}
+
+.btn-group .btn:first-child {
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+}
+
+.btn-group .btn:last-child {
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+}
+</style>
+{% endblock %}
