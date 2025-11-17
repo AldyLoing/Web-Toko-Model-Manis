@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "Blog/Blog/wsgi.py",
+      "src": "wsgi.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     }
@@ -18,10 +18,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "Blog/Blog/wsgi.py"
+      "dest": "wsgi.py"
     }
-  ],
-  "env": {
-    "DJANGO_SETTINGS_MODULE": "Blog.settings"
-  }
+  ]
 }
