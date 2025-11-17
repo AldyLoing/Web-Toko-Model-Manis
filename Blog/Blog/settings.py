@@ -100,7 +100,8 @@ USE_I10N = True
 USE_TZ = True
 
 # API Configuration - External Services
-SHOPEE_SHOP_ID = os.environ.get('SHOPEE_SHOP_ID', '')  # Get from shopee.co.id/modelmanis34
+SHOPEE_SHOP_ID = os.environ.get('SHOPEE_SHOP_ID', '53252649')  # Default: modelmanis34 shop ID
+SHOPEE_PROXY = os.environ.get('SHOPEE_PROXY', '')  # Cloudflare Worker URL (optional but recommended)
 INSTAGRAM_ACCESS_TOKEN = os.environ.get('INSTAGRAM_ACCESS_TOKEN', '')
 
 # Shopee & Instagram URLs

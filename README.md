@@ -1,48 +1,64 @@
 # 🛍️ Web Toko Model Manis
 
-Website e-commerce untuk Toko Model Manis yang dibangun menggunakan Django Framework. Website ini menampilkan produk-produk kreatif dengan fitur manajemen yang lengkap dan integrasi marketplace.
+Website e-commerce untuk Toko Model Manis - **Stateless API-based** menggunakan Django Framework. Website ini menampilkan produk real-time dari Shopee dan Instagram tanpa database.
 
 ![Django](https://img.shields.io/badge/Django-5.1.6-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Vercel](https://img.shields.io/badge/Deploy-Vercel-black.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## 📋 Deskripsi
 
-Web Toko Model Manis adalah platform e-commerce yang dirancang untuk menampilkan dan mengelola produk-produk kreatif. Website ini dilengkapi dengan:
-- Katalog produk dengan kategori
-- Slider banner dinamis
-- Detail produk lengkap dengan gambar
-- Integrasi link marketplace (TikTok & Shopee)
-- Dashboard admin untuk manajemen produk
-- Sistem informasi toko dan mitra
+Web Toko Model Manis adalah platform showcase modern yang menampilkan produk langsung dari **Shopee API** dan feed dari **Instagram**. Website ini:
+- ✅ **Tanpa Database** - Fully stateless, API-first architecture
+- ✅ **Real-time Data** - Produk langsung dari Shopee store
+- ✅ **Serverless Ready** - Deploy ke Vercel tanpa masalah
+- ✅ **Instagram Integration** - Feed Instagram otomatis
+- ✅ **Cloudflare Worker Proxy** - Bypass Shopee 403 blocks
+
+## 🚀 Quick Start
+
+### Option 1: With Cloudflare Worker (Recommended)
+
+**Solves Shopee 403 errors permanently!**
+
+See [Cloudflare Worker Setup Guide](cloudflare-worker/README.md) for detailed instructions.
+
+**Quick steps:**
+1. Deploy Worker from `cloudflare-worker/shopee-proxy.js`
+2. Add `SHOPEE_PROXY` to Vercel environment variables
+3. Done! Products load without 403 errors
+
+### Option 2: Without Worker (Fallback Mode)
+
+Website will show placeholder products with links to your Shopee store.
 
 ## ✨ Fitur Utama
 
-### 🎯 Fitur Pengunjung
-- **Homepage dengan Slider**: Banner dinamis untuk menampilkan produk unggulan
-- **Katalog Produk**: Tampilan produk dengan filter kategori
-- **Detail Produk**: Informasi lengkap produk termasuk material, ukuran, warna, dan harga
-- **Link Marketplace**: Integrasi langsung ke TikTok dan Shopee
-- **Tentang Kami**: Informasi lengkap tentang toko
-- **Kontak**: Form kontak untuk komunikasi dengan toko
+### 🎯 Fitur API-Based
+- **Shopee Products API**: Fetch real-time products from Shopee store
+- **Instagram Feed API**: Display Instagram posts automatically
+- **Cloudflare Worker Proxy**: Bypass Shopee API restrictions
+- **Smart Caching**: 5-minute cache for better performance
+- **Graceful Fallback**: Placeholder products if API fails
+- **No Database**: Stateless serverless architecture
 
-### 🔧 Fitur Admin/Management
-- **Dashboard Management**: Panel kontrol untuk mengelola toko
-- **Manajemen Produk**: CRUD (Create, Read, Update, Delete) produk
-- **Manajemen Kategori**: Organisasi produk berdasarkan kategori
-- **Manajemen Slider**: Kontrol banner slider homepage
-- **Upload Gambar**: Multiple image upload untuk produk
-- **Informasi Toko**: Update informasi kontak dan sosial media
-- **Auto Staff Middleware**: Otomatis promote user menjadi staff
+### 🔧 Technical Features
+- **Real-time Product Sync**: Always shows latest Shopee products
+- **Instagram Gallery**: Auto-updates from Instagram profile
+- **Responsive Design**: Bootstrap 5 mobile-first
+- **Static File Serving**: WhiteNoise for production
+- **Environment-based Config**: Easy deployment to any platform
 
 ## 🛠️ Teknologi yang Digunakan
 
-- **Backend**: Django 5.1.6
-- **Database**: SQLite (development)
-- **Frontend**: HTML5, CSS3, Bootstrap
-- **Image Processing**: Pillow 11.3.0
-- **Static Files**: Django Static Files
-- **Media Storage**: Django Media Files
+- **Backend**: Django 5.1.6 (API mode, no database)
+- **External APIs**: Shopee API, Instagram Basic Display API
+- **Proxy**: Cloudflare Workers (bypasses 403)
+- **Frontend**: HTML5, CSS3, Bootstrap 5
+- **Caching**: Django LocMemCache
+- **Deployment**: Vercel Serverless
+- **Static Files**: WhiteNoise
 
 ## 📦 Instalasi
 

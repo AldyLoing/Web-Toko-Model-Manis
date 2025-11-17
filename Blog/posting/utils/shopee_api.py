@@ -96,7 +96,7 @@ def get_shop_id_from_username(username='modelmanis34'):
 
 def fetch_shopee_products(shop_id=None, limit=50, offset=0):
     """
-    Fetch products from Shopee API
+    Fetch products from Shopee API via Cloudflare Worker Proxy
     
     Args:
         shop_id: Shopee shop ID (if None, try to get from env or resolve from username)
@@ -119,7 +119,7 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
         shop_id = get_shop_id_from_username('modelmanis34')
         if not shop_id:
             logger.error("Cannot resolve Shopee shop ID")
-            return {'products': [], 'total': 0, 'has_more': False}
+            return get_fallback_result(limit)
     
     # Check cache
     cache_key = f'shopee_products_{shop_id}_{limit}_{offset}'
@@ -128,31 +128,43 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
         return cached_data
     
     try:
-        url = 'https://shopee.co.id/api/v4/search/search_items'
-        params = {
-            'by': 'relevancy',
-            'limit': limit,
-            'match_id': shop_id,
-            'newest': offset,
-            'order': 'desc',
-            'page_type': 'shop',
-            'scenario': 'PAGE_OTHERS',
-            'version': 2
-        }
+        # Try Cloudflare Worker Proxy first (if configured)
+        proxy_url = getattr(settings, 'SHOPEE_PROXY', None)
         
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36',
-            'Accept': 'application/json',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Cache-Control': 'no-cache',
-            'Referer': f'https://shopee.co.id/shop/{shop_id}/',
-        }
+        if proxy_url:
+            logger.info("Using Cloudflare Worker Proxy for Shopee API")
+            url = proxy_url
+            params = {
+                'shopid': shop_id,
+                'limit': limit,
+                'offset': offset
+            }
+            headers = {
+                'Accept': 'application/json',
+            }
+        else:
+            # Fallback to direct API (will likely get 403)
+            logger.warning("SHOPEE_PROXY not configured, using direct API (may get blocked)")
+            url = 'https://shopee.co.id/api/v4/search/search_items'
+            params = {
+                'by': 'relevancy',
+                'limit': limit,
+                'match_id': shop_id,
+                'newest': offset,
+                'order': 'desc',
+                'page_type': 'shop',
+                'scenario': 'PAGE_OTHERS',
+                'version': 2
+            }
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36',
+                'Accept': 'application/json',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Cache-Control': 'no-cache',
+                'Referer': f'https://shopee.co.id/shop/{shop_id}/',
+            }
         
-        cookies = {
-            'shopee_webUnique_id': 'DUMMY123456'
-        }
-        
-        response = requests.get(url, params=params, headers=headers, cookies=cookies, timeout=15)
+        response = requests.get(url, params=params, headers=headers, timeout=15)
         response.raise_for_status()
         
         data = response.json()
