@@ -10,6 +10,63 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def get_static_products():
+    """
+    Static product data as fallback when Shopee API is blocked
+    Data should be updated manually from https://shopee.co.id/modelmanis34
+    """
+    return [
+        {
+            'itemid': 1,
+            'shopid': 53252649,
+            'name': 'Produk Fashion Wanita - Lihat Toko Kami',
+            'price': 100000,
+            'price_min': 50000,
+            'price_max': 200000,
+            'image': 'https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Model+Manis',
+            'images': [],
+            'stock': 999,
+            'sold': 0,
+            'historical_sold': 0,
+            'liked_count': 0,
+            'rating_star': 5.0,
+            'url': settings.SHOPEE_STORE_URL,
+        },
+        {
+            'itemid': 2,
+            'shopid': 53252649,
+            'name': 'Koleksi Pakaian Muslim - Kunjungi Shopee',
+            'price': 150000,
+            'price_min': 80000,
+            'price_max': 250000,
+            'image': 'https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Model+Manis',
+            'images': [],
+            'stock': 999,
+            'sold': 0,
+            'historical_sold': 0,
+            'liked_count': 0,
+            'rating_star': 5.0,
+            'url': settings.SHOPEE_STORE_URL,
+        },
+        {
+            'itemid': 3,
+            'shopid': 53252649,
+            'name': 'Aksesoris & Hijab - Lihat Koleksi Lengkap',
+            'price': 75000,
+            'price_min': 30000,
+            'price_max': 150000,
+            'image': 'https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Model+Manis',
+            'images': [],
+            'stock': 999,
+            'sold': 0,
+            'historical_sold': 0,
+            'liked_count': 0,
+            'rating_star': 5.0,
+            'url': settings.SHOPEE_STORE_URL,
+        },
+    ]
+
+
 def get_shop_id_from_username(username='modelmanis34'):
     """
     Get Shopee shop ID from username/slug
@@ -149,13 +206,32 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
             
     except requests.exceptions.Timeout:
         logger.error("Shopee API timeout")
-        return {'products': [], 'total': 0, 'has_more': False, 'error': 'timeout'}
+        logger.info("Using static fallback products")
+        return get_fallback_result(limit)
     except requests.exceptions.RequestException as e:
         logger.error(f"Shopee API request error: {e}")
-        return {'products': [], 'total': 0, 'has_more': False, 'error': 'api_blocked'}
+        logger.info("Using static fallback products")
+        return get_fallback_result(limit)
     except Exception as e:
         logger.error(f"Unexpected error fetching Shopee products: {e}")
-        return {'products': [], 'total': 0, 'has_more': False, 'error': 'unknown'}
+        logger.info("Using static fallback products")
+        return get_fallback_result(limit)
+
+
+def get_fallback_result(limit=50):
+    """
+    Return static products when API is unavailable
+    """
+    static_products = get_static_products()
+    # Repeat to fill limit
+    products = (static_products * ((limit // len(static_products)) + 1))[:limit]
+    
+    return {
+        'products': products,
+        'total': len(products),
+        'has_more': False,
+        'error': 'api_blocked'
+    }
 
 
 def build_shopee_image_url(image_id, shop_id=None):
