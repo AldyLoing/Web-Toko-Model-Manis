@@ -45,15 +45,24 @@ export default {
     const shopeeUrl = `https://shopee.co.id/api/v4/search/search_items?by=relevancy&limit=${limit}&match_id=${shopId}&newest=${offset}&order=desc&page_type=shop&scenario=PAGE_OTHERS&version=2`;
 
     try {
-      // Fetch from Shopee with browser-like headers
+      // Fetch from Shopee with complete browser-like headers
       const response = await fetch(shopeeUrl, {
         method: "GET",
         headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36",
-          "Accept": "application/json",
-          "Accept-Language": "en-US,en;q=0.9",
-          "Referer": `https://shopee.co.id/shop/${shopId}/`,
-          "Cache-Control": "no-cache",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+          "Accept": "*/*",
+          "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+          "Accept-Encoding": "gzip, deflate, br",
+          "Referer": "https://shopee.co.id/",
+          "Origin": "https://shopee.co.id",
+          "Sec-Fetch-Dest": "empty",
+          "Sec-Fetch-Mode": "cors",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Ch-Ua": '"Not A(Brand";v="99", "Google Chrome";v="122", "Chromium";v="122"',
+          "Sec-Ch-Ua-Mobile": "?0",
+          "Sec-Ch-Ua-Platform": '"Windows"',
+          "X-Requested-With": "XMLHttpRequest",
+          "X-Api-Source": "pc",
         },
       });
 
