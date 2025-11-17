@@ -84,21 +84,18 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
         }
         
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Accept-Encoding': 'gzip, deflate, br',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36',
+            'Accept': 'application/json',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Cache-Control': 'no-cache',
             'Referer': f'https://shopee.co.id/shop/{shop_id}/',
-            'Origin': 'https://shopee.co.id',
-            'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
         }
         
-        response = requests.get(url, params=params, headers=headers, timeout=15)
+        cookies = {
+            'shopee_webUnique_id': 'DUMMY123456'
+        }
+        
+        response = requests.get(url, params=params, headers=headers, cookies=cookies, timeout=15)
         response.raise_for_status()
         
         data = response.json()
@@ -152,13 +149,13 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
             
     except requests.exceptions.Timeout:
         logger.error("Shopee API timeout")
-        return {'products': [], 'total': 0, 'has_more': False}
+        return {'products': [], 'total': 0, 'has_more': False, 'error': 'timeout'}
     except requests.exceptions.RequestException as e:
         logger.error(f"Shopee API request error: {e}")
-        return {'products': [], 'total': 0, 'has_more': False}
+        return {'products': [], 'total': 0, 'has_more': False, 'error': 'api_blocked'}
     except Exception as e:
         logger.error(f"Unexpected error fetching Shopee products: {e}")
-        return {'products': [], 'total': 0, 'has_more': False}
+        return {'products': [], 'total': 0, 'has_more': False, 'error': 'unknown'}
 
 
 def build_shopee_image_url(image_id, shop_id=None):

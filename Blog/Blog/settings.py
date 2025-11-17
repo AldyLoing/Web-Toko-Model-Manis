@@ -110,6 +110,17 @@ INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/modelmanis_rtl/'
 # Cache timeout (in seconds) for API calls
 API_CACHE_TIMEOUT = 300  # 5 minutes
 
+# Cache configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'shopee-api-cache',
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 

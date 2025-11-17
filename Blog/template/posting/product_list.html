@@ -7,6 +7,13 @@
 <div class="container my-5">
     <h1 class="text-center mb-5">Produk Kami</h1>
     
+    {% if shopee_error %}
+    <div class="alert alert-info text-center">
+        <i class="lni lni-information"></i> Produk tidak dapat dimuat, silakan kunjungi 
+        <a href="{{ shopee_url }}" target="_blank" class="alert-link">toko Shopee kami</a>.
+    </div>
+    {% endif %}
+    
     {% if error %}
     <div class="alert alert-warning text-center">
         <i class="lni lni-warning"></i> {{ error }}

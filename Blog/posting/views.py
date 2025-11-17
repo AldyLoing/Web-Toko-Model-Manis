@@ -20,6 +20,7 @@ def homepage(request):
         # Fetch products from Shopee
         shopee_data = fetch_shopee_products(limit=12)
         products = shopee_data.get('products', [])
+        shopee_error = shopee_data.get('error')
         
         # Get Instagram feed preview (first 6 posts)
         instagram_data = fetch_instagram_feed(limit=6)
@@ -32,6 +33,7 @@ def homepage(request):
             'instagram_url': settings.INSTAGRAM_PROFILE_URL,
             'has_products': len(products) > 0,
             'has_instagram': len(instagram_posts) > 0,
+            'shopee_error': shopee_error,  # Pass error flag to template
         }
         
         return render(request, 'posting/homepage.html', context)
@@ -72,6 +74,7 @@ def product_list(request):
         products = shopee_data.get('products', [])
         total = shopee_data.get('total', 0)
         has_more = shopee_data.get('has_more', False)
+        shopee_error = shopee_data.get('error')
         
         # Calculate pagination
         total_pages = (total + limit - 1) // limit if total > 0 else 1
@@ -87,6 +90,7 @@ def product_list(request):
             'total_products': total,
             'shopee_url': settings.SHOPEE_STORE_URL,
             'has_products': len(products) > 0,
+            'shopee_error': shopee_error,  # Pass error flag to template
         }
         
         return render(request, 'posting/product_list.html', context)
