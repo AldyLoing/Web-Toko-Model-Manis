@@ -1,8 +1,4 @@
-asgiref==3.8.1
 Django==5.1.6
-Pillow==11.3.0
-sqlparse==0.5.3
-typing_extensions==4.12.2
 whitenoise==6.8.2
-psycopg2-binary==2.9.9
-dj-database-url==2.2.0
+requests==2.32.3
+Pillow==11.3.0

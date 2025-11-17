@@ -36,8 +36,6 @@ if not DEBUG:
 
 INSTALLED_APPS = [
     'posting',
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -47,14 +45,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'posting.middleware.auto_staff.AutoStaffMiddleware',  # Auto-promote users to staff
 ]
 
 ROOT_URLCONF = 'Blog.urls'
@@ -78,35 +74,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Blog.wsgi.application'
 
 
-# Database
+# Database - Disabled for stateless API-based application
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# Check if DATABASE_URL is provided (PostgreSQL from Vercel)
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy',
     }
-elif 'VERCEL' in os.environ or 'vercel' in os.environ.get('HOSTNAME', '').lower():
-    # Vercel environment without database - use in-memory (temporary solution)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:',
-        }
-    }
-else:
-    # Local development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -140,10 +114,16 @@ USE_I10N = True
 
 USE_TZ = True
 
+# API Configuration - External Services
+SHOPEE_SHOP_ID = os.environ.get('SHOPEE_SHOP_ID', '')  # Get from shopee.co.id/modelmanis34
+INSTAGRAM_ACCESS_TOKEN = os.environ.get('INSTAGRAM_ACCESS_TOKEN', '')
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'index'
+# Shopee & Instagram URLs
+SHOPEE_STORE_URL = 'https://shopee.co.id/modelmanis34'
+INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/modelmanis_rtl/'
+
+# Cache timeout (in seconds) for API calls
+API_CACHE_TIMEOUT = 300  # 5 minutes
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
