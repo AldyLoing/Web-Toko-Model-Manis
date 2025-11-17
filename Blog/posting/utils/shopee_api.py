@@ -18,7 +18,13 @@ def get_shop_id_from_username(username='modelmanis34'):
         url = f'https://shopee.co.id/api/v4/shop/get_shop_detail'
         params = {'username': username}
         
-        response = requests.get(url, params=params, timeout=10)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/json',
+            'Referer': f'https://shopee.co.id/{username}',
+        }
+        
+        response = requests.get(url, params=params, headers=headers, timeout=10)
         response.raise_for_status()
         
         data = response.json()
@@ -78,8 +84,18 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
         }
         
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Referer': settings.SHOPEE_STORE_URL,
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Referer': f'https://shopee.co.id/shop/{shop_id}/',
+            'Origin': 'https://shopee.co.id',
+            'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
         }
         
         response = requests.get(url, params=params, headers=headers, timeout=15)
