@@ -6,7 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', include('posting.urls_new')),
+    path('', include('posting.urls')),
 ]
 
 # Serve static files in development
