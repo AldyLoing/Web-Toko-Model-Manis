@@ -2,7 +2,7 @@
 URL configuration for posting app
 """
 from django.urls import path
-from . import views_new as views
+from . import views
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
