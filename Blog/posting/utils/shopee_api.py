@@ -10,6 +10,73 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def get_fallback_products(limit=50):
+    """
+    Return sample/fallback product data when Shopee API is unavailable
+    This provides a graceful degradation instead of showing empty pages
+    """
+    fallback_products = [
+        {
+            'itemid': 1,
+            'shopid': 53252649,
+            'name': 'Baju Gamis Wanita Terbaru - Model Syari Elegant',
+            'price': 125000,
+            'price_min': 125000,
+            'price_max': 150000,
+            'image': 'https://cf.shopee.co.id/file/id-11134207-7qul8-ljx0x0x0x0x0x',
+            'images': [],
+            'stock': 50,
+            'sold': 234,
+            'historical_sold': 1200,
+            'liked_count': 156,
+            'rating_star': 4.8,
+            'url': settings.SHOPEE_STORE_URL,
+        },
+        {
+            'itemid': 2,
+            'shopid': 53252649,
+            'name': 'Hijab Instant Premium - Berbagai Warna',
+            'price': 45000,
+            'price_min': 45000,
+            'price_max': 65000,
+            'image': 'https://cf.shopee.co.id/file/id-11134207-7qul8-ljx0x0x0x0x0x',
+            'images': [],
+            'stock': 100,
+            'sold': 567,
+            'historical_sold': 2340,
+            'liked_count': 289,
+            'rating_star': 4.9,
+            'url': settings.SHOPEE_STORE_URL,
+        },
+        {
+            'itemid': 3,
+            'shopid': 53252649,
+            'name': 'Tunik Modern Casual - Nyaman Dipakai',
+            'price': 89000,
+            'price_min': 89000,
+            'price_max': 105000,
+            'image': 'https://cf.shopee.co.id/file/id-11134207-7qul8-ljx0x0x0x0x0x',
+            'images': [],
+            'stock': 75,
+            'sold': 189,
+            'historical_sold': 890,
+            'liked_count': 134,
+            'rating_star': 4.7,
+            'url': settings.SHOPEE_STORE_URL,
+        },
+    ]
+    
+    # Repeat products to fill the limit
+    products = (fallback_products * ((limit // len(fallback_products)) + 1))[:limit]
+    
+    return {
+        'products': products,
+        'total': len(products),
+        'has_more': False,
+        'is_fallback': True,  # Flag to indicate this is fallback data
+    }
+
+
 def get_shop_id_from_username(username='modelmanis34'):
     """
     Get Shopee shop ID from username/slug
@@ -152,13 +219,17 @@ def fetch_shopee_products(shop_id=None, limit=50, offset=0):
             
     except requests.exceptions.Timeout:
         logger.error("Shopee API timeout")
-        return {'products': [], 'total': 0, 'has_more': False}
+        return get_fallback_products(limit)
     except requests.exceptions.RequestException as e:
         logger.error(f"Shopee API request error: {e}")
+        # If 403, return fallback data instead of empty
+        if '403' in str(e):
+            logger.warning("Using fallback product data due to Shopee API restrictions")
+            return get_fallback_products(limit)
         return {'products': [], 'total': 0, 'has_more': False}
     except Exception as e:
         logger.error(f"Unexpected error fetching Shopee products: {e}")
-        return {'products': [], 'total': 0, 'has_more': False}
+        return get_fallback_products(limit)
 
 
 def build_shopee_image_url(image_id, shop_id=None):

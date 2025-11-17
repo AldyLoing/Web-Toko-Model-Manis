@@ -20,6 +20,7 @@ def homepage(request):
         # Fetch products from Shopee
         shopee_data = fetch_shopee_products(limit=12)
         products = shopee_data.get('products', [])
+        is_fallback = shopee_data.get('is_fallback', False)
         
         # Get Instagram feed preview (first 6 posts)
         instagram_data = fetch_instagram_feed(limit=6)
@@ -32,6 +33,7 @@ def homepage(request):
             'instagram_url': settings.INSTAGRAM_PROFILE_URL,
             'has_products': len(products) > 0,
             'has_instagram': len(instagram_posts) > 0,
+            'show_shopee_notice': is_fallback,  # Show notice when using fallback data
         }
         
         return render(request, 'posting/homepage.html', context)
@@ -72,6 +74,7 @@ def product_list(request):
         products = shopee_data.get('products', [])
         total = shopee_data.get('total', 0)
         has_more = shopee_data.get('has_more', False)
+        is_fallback = shopee_data.get('is_fallback', False)
         
         # Calculate pagination
         total_pages = (total + limit - 1) // limit if total > 0 else 1
@@ -86,6 +89,7 @@ def product_list(request):
             'next_page': page_number + 1,
             'total_products': total,
             'shopee_url': settings.SHOPEE_STORE_URL,
+            'show_shopee_notice': is_fallback,  # Show notice when using fallback data
             'has_products': len(products) > 0,
         }
         
