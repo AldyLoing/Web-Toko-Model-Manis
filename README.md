@@ -854,9 +854,9 @@ Project ini dilisensikan di bawah MIT License - lihat file [LICENSE](LICENSE) un
 ## 📞 Kontak
 
 Jika Anda memiliki pertanyaan atau saran, silakan hubungi melalui:
-- Email: [Your Email]
-- WhatsApp: [Your WhatsApp]
-- Instagram: [@modelmanis](https://instagram.com/modelmanis)
+- Email: [loingaldy@gmail.com]
+- WhatsApp: [082293494989]
+- Instagram: [@aldy_loing](https://instagram.com/aldy_loing)
 
 ## 🙏 Acknowledgments
 
